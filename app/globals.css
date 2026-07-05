@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  background: #0b0814;
+  color: white;
+  font-family: sans-serif;
+  overflow-x: hidden;
+}
+
+/* cinematic glow background */
+.bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(120,80,200,0.25), transparent 60%),
+              radial-gradient(circle at bottom, rgba(200,160,90,0.15), transparent 60%);
+  z-index: -1;
+  animation: slow 10s infinite alternate;
+}
+
+@keyframes slow {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: float 8s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
+}
