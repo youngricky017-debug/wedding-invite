@@ -8,12 +8,22 @@ export async function POST(req: Request) {
 
     // If a Google Apps Script webhook URL is provided via env, forward the RSVP to that URL.
     const sheetsUrl = process.env.SHEETS_WEBHOOK_URL;
+    const sheetsToken = process.env.SHEETS_WEBHOOK_TOKEN;
     if (sheetsUrl) {
       try {
+        const payload = {
+          name: body.name,
+          phone: body.phone,
+          message: body.message,
+          createdAt: new Date().toISOString(),
+        };
+        // include token if available
+        if (sheetsToken) payload['token'] = sheetsToken;
+
         const resp = await fetch(sheetsUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: body.name, phone: body.phone, message: body.message, createdAt: new Date().toISOString() })
+          body: JSON.stringify(payload)
         });
         if (!resp.ok) {
           console.error('Sheets webhook failed', resp.status, await resp.text().catch(()=>''));
